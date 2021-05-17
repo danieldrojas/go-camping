@@ -5,13 +5,25 @@
     <title>Simple Map</title>
     <script
         src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style/style.css">
+    <script type="module" src="./assets/mapScript.js"></script>
     <script defer type="module" src="./index.js"></script>
 </head>
 
 <body>
     <h1>Go camp</h1>
+    <div class="panel">
+        <form>
+            <label for="origin">Origin: </label>
+            <input id="origin" name="map">
+            <label for="destination">Destination: </label>
+            <input id="destination" name="map">
+            <input type="submit" id="searchBtn" name="map">`
+        </form>
+    </div>
     <div id="map"></div>
+
+
 
 
 </body>

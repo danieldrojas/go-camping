@@ -1,24 +1,65 @@
-import API_KEY_MAPS_GOOGLE from "./apikey.js";
-
 window.initMap = initMap
-
-// }
-// console.log("index.js")
 
 let map;
 
+//map instance 
 function initMap() {
+    const directionsService = new google.maps.DirectionsService();
+    const directionsRenderer = new google.maps.DirectionsRenderer();
     map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: -34.397, lng: 150.644 },
+        center: { lat: 35.2784, lng: -93.1338 },
         zoom: 8,
     });
+    directionsRenderer.setMap(map);
+
+
+    submitButton.addEventListener("click", function (e) {
+        directions(e, directionsRenderer, directionsService)
+    })
+
+
 }
 
-const script = document.createElement("script")
-console.log(script)
+//input UI
+const originField = document.getElementById("origin");
+const destinationField = document.getElementById("destination");
+const submitButton = document.getElementById("searchBtn")
 
-script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY_MAPS_GOOGLE}&callback=initMap`;
-script.async = true;
 
 
-document.head.appendChild(script)
+
+function directions(e, directionsRenderer, directionsService) {
+    e.preventDefault()
+    let origin = originField.value;
+    let destination = destinationField.value;
+
+
+    directionsService.route(
+        {
+            origin: {
+                query: origin
+            },
+            destination: {
+                query: destination
+            },
+            travelMode: google.maps.TravelMode.DRIVING,
+        },
+        (response, status) => {
+            if (status === "OK") {
+                directionsRenderer.setDirections(response);
+            } else {
+                window.alert("Directions request failed due to " + status);
+            }
+        }
+    );
+}
+
+
+
+
+
+
+
+
+
+
