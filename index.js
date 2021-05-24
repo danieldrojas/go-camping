@@ -92,46 +92,27 @@ function getPointAtMiles() {
     console.log(trip)
 
     //places
-    // console.log("map: ", map)
 
-    // const placesService = new google.maps.places.PlacesService(map);
-    // placesService.findPlaceFromQuery(request, callback)
-    // console.log(placesService)
-
-    // let placePhe = placesService.findPlaceFromNumber(request)
-
-    // console.log(placePhe)
-
-
-
-    // let ratio = trip.distance. / trip.distance.value;
-    // console.log(ratio) //debugged ok
-    //find an initial point to start iteration at array[i]
-    // let index = Math.ceil(ratio * trip.steps.length);
-    // console.log("index: ", index);
-    // let step = trip.steps[index];
-    // console.log(step)
+    const placesService = new google.maps.places.PlacesService(map);
+    placesService.nearbySearch({
+        location: trip.stops[0].stop_point_coors,
+        radius: 15000,
+        name: "campground"
+    }, places => {
+        console.log(places);
+        placesService.getDetails({
+            placeId: places[0].place_id
+        }, details => {
+            console.log(details)
+            new google.maps.Marker({
+                map,
+                position: details.geometry.location
+            })
+        });
 
 
-
-
-
-
-    // console.log("trip with index: ", index, steps[index])
-    // let { end_location: end_location,
-    //     start_location: start_location } = steps[index];
-    // console.log("end_location: ", end_location, "start_location: ", start_location)
-
-
-    // if (start_location > miles > end_location) {
-    //     return
-    // }
-
-
-    // iteration(index - 1);
-
-
-
+    });
+    console.log(placesService)
 
 }
 
