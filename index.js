@@ -75,7 +75,6 @@ function startRoute() {
 function getAndSetStop() {
     // getRouteStep
     setStopToTrip();
-
     findPlaces();
 
 };
@@ -112,8 +111,9 @@ function setStopToTrip() {
     console.log(trip)
 }
 
+//places
 function findPlaces() {
-    //places
+    //inst of PlaceService Google Api
     const placesService = new google.maps.places.PlacesService(map);
     placesService.nearbySearch({
         location: trip.stops[0].stop_point_coors,
