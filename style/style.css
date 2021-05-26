@@ -48,14 +48,65 @@ body {
   overflow: scroll;
   height: 174px;
 } */
+/* .panel {
+  margin: 20px;
+  border-width: 2px;
+  width: 20%;
+  height: 400px;
+  float: left;
+  text-align: left;
+  padding-top: 0;
+} */
 
 #map {
-  height: 20%;
+  height: 50%;
   width: 70%;
+  border-radius: 7px;
+  border-style: solid;
+  border-width: 1px;
+  float: left;
 }
+
+/* .panel {
+  margin: 20px;
+  border-width: 2px;
+  border-style: solid;
+  border-radius: 5px;
+  width: 20%;
+  height: 400px;
+  float: left;
+  text-align: left;
+  padding: 10px;
+} */
+
 html,
 body {
   height: 100%;
   margin: 0;
   padding: 0;
+  text-align: center;
+}
+.main {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+p {
+  text-align: center;
+}
+
+.places {
+  display: block;
+}
+.campground > div {
+  background-color: teal;
+  border-radius: 15px;
+  width: 70%;
 }

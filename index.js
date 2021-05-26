@@ -1,5 +1,6 @@
 //set the init function available to the window.
-window.initMap = initMap
+window.initMap = initMap;
+import displayDetails from "./assets/displayDetails.js";
 
 // all calculations are done using meters
 
@@ -15,11 +16,11 @@ let destination;
 let distanceToStop;
 //TODO: delete, these are for development 
 origin = "133+richland+circle+Russellville+AR";
-destination = "2370+main+street+northwest+duluth+ga";
-distanceToStop = 495631
-// trip.origin = origin
-// trip.destination = destination
-// trip.traveledTarget = distanceToStop;
+destination = "glacier national park, MT";
+distanceToStop = 400 * 1609;
+trip.origin = origin
+trip.destination = destination
+trip.traveledTarget = distanceToStop;
 
 //map instance 
 function initMap() {
@@ -27,16 +28,17 @@ function initMap() {
         center: { lat: 35.2784, lng: -93.1338 },
         zoom: 8,
     });
-    submitButton.addEventListener("click", e => {
-        e.preventDefault(); //for the form
-        //assign form values to vars
-        // origin = originField.value;
-        // destination = destinationField.value;
-        // distanceToStop = milesField.value * 1609.34; // convert miles to meters
-        startRoute();
-
-    })
 }
+
+
+submitButton.addEventListener("click", e => {
+    e.preventDefault(); //for the form
+    //assign form values to vars
+    // origin = originField.value;
+    // destination = destinationField.value;
+    // distanceToStop = milesField.value * 1609.34; // convert miles to meters
+    startRoute();
+})
 
 function startRoute() {
     const directionsService = new google.maps.DirectionsService();
@@ -57,6 +59,7 @@ function startRoute() {
             if (status === "OK") {
                 trip = response.routes[0].legs[0]; //assign the route to trip
 
+                console.log("trip after response: ", trip)
                 //set the map to resp 
                 directionsRenderer.setDirections(response);
                 directionsRenderer.setMap(map);
@@ -75,8 +78,38 @@ function startRoute() {
 function getAndSetStop() {
     // getRouteStep
     setStopToTrip();
-    findPlaces();
+    const placesService = new google.maps.places.PlacesService(map);
 
+    placesService.nearbySearch({  //nearbySearch call for places Id
+        location: trip.stops[0].stop_point_coors,
+        radius: 15000,
+        name: "campground"
+    }, places => {
+        console.log("places form nearby", places);
+
+        let placesId = [];
+        //TODO: find better way to make this accessible in display.js
+        const { stop_point_coors: stopLatLng } = trip.stops[0];
+
+        places.forEach(place => {
+            placesId.push(place.place_id);
+        })
+        placesId.forEach((place_id) => {
+            placesService.getDetails({ //call to getDetails for place's details info;
+                placeId: place_id
+            }, campground => {
+                let distanceCampground;
+                //marker for each campground opt.
+                new google.maps.Marker({
+                    map,
+                    position: campground.geometry.location
+                });
+                distanceCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location)
+                campground.distanceCampground = Math.round(distanceCampground);
+                displayDetails(campground)
+            });
+        })
+    });
 };
 
 
@@ -108,41 +141,5 @@ function setStopToTrip() {
     let LatLngAtStop = stop.path[pathIndex]
 
     stop.stop_point_coors = LatLngAtStop
-    console.log(trip)
 }
 
-//places
-function findPlaces() {
-    //inst of PlaceService Google Api
-    const placesService = new google.maps.places.PlacesService(map);
-    placesService.nearbySearch({
-        location: trip.stops[0].stop_point_coors,
-        radius: 15000,
-        name: "campground"
-    }, places => {
-        console.log(places);
-        let placesId = [];
-        places.forEach(place => {
-            placesId.push(place.place_id);
-        })
-        console.log(placesId, "places id arra: ")
-        placesId.forEach((place_id) => {
-            console.log(place_id)
-            placesService.getDetails({
-                placeId: place_id
-            }, details => {
-                console.log(details)
-
-                new google.maps.Marker({
-                    map,
-                    position: details.geometry.location
-                })
-                let div = document.createElement("div");
-                div.innerHTML = `
-                <span>${details.name}</span>
-                `
-                document.getElementById("places").append(div)
-            });
-        })
-    });
-};
