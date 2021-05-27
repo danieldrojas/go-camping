@@ -100,10 +100,7 @@ function getAndSetStop() {
             }, campground => {
                 let distanceCampground;
                 //marker for each campground opt.
-                new google.maps.Marker({
-                    map,
-                    position: campground.geometry.location
-                });
+                addMarker(campground.geometry.location, "C")
                 distanceCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location)
                 campground.distanceCampground = Math.round(distanceCampground);
                 displayDetails(campground)
@@ -112,6 +109,30 @@ function getAndSetStop() {
     });
 };
 
+function addMarker(position, label) {
+
+    const marker = new google.maps.Marker({
+        position,
+        label,
+        map,
+    });
+
+    infoWindow(marker)
+
+
+
+
+}
+
+function infoWindow(marker) {
+    const str = "<span>'Hello World'</span>";
+    const infoWindowConst = new google.maps.InfoWindow({
+        content: str,
+    });
+    marker.addListener("click", () => {
+        infoWindowConst.open(map, marker)
+    })
+}
 
 function getDistanceBetweenPoints(startLatLng, endLatLng) {
     return google.maps.geometry.spherical.computeDistanceBetween(startLatLng, endLatLng)
@@ -141,5 +162,6 @@ function setStopToTrip() {
     let LatLngAtStop = stop.path[pathIndex]
 
     stop.stop_point_coors = LatLngAtStop
+    addMarker(LatLngAtStop, "S")
 }
 

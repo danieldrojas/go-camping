@@ -1,11 +1,11 @@
-let campgrounds = [];
+let campgroundsSelected = [];
 
 export default function displayDetails(campground) {
     console.log("ditails func: ", campground)
-    campgrounds.push({
-        place_id: campground.place_id,
-        url: campground.url,
-    });
+    // campgroundsSelected.push({
+    //     place_id: campground.place_id,
+    //     url: campground.url,
+    // });
 
     const div = document.createElement("div");
     document.querySelector(".campground").append(div);
@@ -14,25 +14,30 @@ export default function displayDetails(campground) {
     para.setAttribute("id", `${campground.place_id}`)
     para.style.padding = "20px"
 
-    // div.addEventListener("click", event => {
-    //     console.log(event)
-    //     if (event.target.nodeName == "BUTTON") {
+    div.addEventListener("click", event => {
+        console.log(event)
+        event
+        if (event.target.nodeName == "INPUT" && event.target.id == "addBtn") {
+            campgroundsSelected.push(event.target.defaultValue)
 
-    //     }
+            console.log(campgroundsSelected)
+
+        }
+    })
 
 
-    // })
     TODO: //order the campground options from closest distance.
     para.innerHTML = `
          <span><strong>${campground.name}</strong></span>
         <span>${campground.rating} stars</span><br>
   ${campground.adr_address}<br>
+  <span>${campground.formatted_phone_number}</span>
         <span>${Math.round(campground.distanceCampground / 1609)} miles </span><br>
-       <a href="${campground.url}" target="_blank"> <button>Google maps</button> </a>
+        <label for="addBtn" name="campgroundOptions"> <input id="addBtn" name="campgroundOptions" type="radio" value=${campground.place_id}>Add to route</label>
+          <a target="_blank" href="${campground.url}"><button>More</button></a>
       `;
     div.appendChild(para)
     console.log(div)
-    console.log("array of campgrounds: ", campgrounds)
 
 
 
