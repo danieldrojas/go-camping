@@ -1,6 +1,6 @@
 let campgroundsSelected = [];
 
-export default function displayDetails(campground) {
+export default function displayDetails(campground, addMarkerCb, infoWindowCb) {
     console.log("ditails func: ", campground)
     // campgroundsSelected.push({
     //     place_id: campground.place_id,
@@ -25,9 +25,8 @@ export default function displayDetails(campground) {
         }
     })
 
-
-    TODO: //order the campground options from closest distance.
-    para.innerHTML = `
+    // TODO: order the campground options from closest distance.
+    let info = `
          <span><strong>${campground.name}</strong></span>
         <span>${campground.rating} stars</span><br>
   ${campground.adr_address}<br>
@@ -36,8 +35,10 @@ export default function displayDetails(campground) {
         <label for="addBtn" name="campgroundOptions"> <input id="addBtn" name="campgroundOptions" type="radio" value=${campground.place_id}>Add to route</label>
           <a target="_blank" href="${campground.url}"><button>More</button></a>
       `;
+    para.innerHTML = info;
+    const marker = addMarkerCb(campground.geometry.location, "C")
+    infoWindowCb(marker, info);
     div.appendChild(para)
-    console.log(div)
 
 
 
