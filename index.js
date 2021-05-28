@@ -99,6 +99,8 @@ function getAndSetStop() {
                 placeId: place_id
             }, campground => {
 
+                const marker = addMarker(campground.geometry.location, "C", campground.name)
+
                 //marker for each campground opt.
                 const distanceToCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location);
                 //attach to campground obj
@@ -106,7 +108,7 @@ function getAndSetStop() {
 
                 //creates markers and infoWindow
                 const content = displayDetails(campground)
-                const marker = addMarker(campground.geometry.location, "C", campground.name)
+
                 infoWindow(marker, content);
 
             });

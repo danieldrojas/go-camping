@@ -79,7 +79,7 @@ p {
   text-align: center;
 }
 
-.campground > div {
+.places .campground {
   background-color: teal;
   border-radius: 15px;
   width: 70%;
