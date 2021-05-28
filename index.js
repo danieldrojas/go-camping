@@ -98,13 +98,13 @@ function getAndSetStop() {
             placesService.getDetails({ //call to getDetails for place's details info;
                 placeId: place_id
             }, campground => {
-                let distanceCampground;
-                //marker for each campground opt.
-                distanceCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location);
-                //attach to campground obj
-                campground.distanceCampground = Math.round(distanceCampground);
 
-                //creates markers and infowindow
+                //marker for each campground opt.
+                const distanceToCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location);
+                //attach to campground obj
+                campground.distanceToCampground = Math.round(distanceToCampground);
+
+                //creates markers and infoWindow
                 const content = displayDetails(campground)
                 const marker = addMarker(campground.geometry.location, "C", campground.name)
                 infoWindow(marker, content);
@@ -125,22 +125,18 @@ function addMarker(position, label, title) {
 
 function infoWindow(marker, content) {
     let isCampAdded = false;
+    let typeOfStop = "campground";
     const infoWindowConst = new google.maps.InfoWindow({
         content,
     });
 
-
     marker.addListener("click", (e) => {
         infoWindowConst.open(map, marker);
-    })
-
+    });
+    //check if infowindow has created the node in the DOM
     infoWindowConst.addListener("domready", () => {
         isCampAdded = true;
-        // const addBtn = document.getElementById("addBtn");
-        // addBtn.addEventListener("click", e => {
-        //     console.log(e)
-        displayDetails(undefined, isCampAdded)
-        // })    
+        displayDetails(undefined, typeOfStop)
     })
 
 

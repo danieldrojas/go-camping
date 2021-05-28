@@ -18,20 +18,24 @@
             <div class="panel">
                 <form>
                     <label for="origin">Origin: </label>
-                    <input id="origin" name="map">
+                    <input id="origin" name="tripParameters">
                     <label for="destination">Destination: </label>
-                    <input id="destination" name="map">
-                    <label>Miles: </label>
-                    <input id="miles-day" name="map"
-                        placeholder="want to drive today?">
+                    <input id="destination" name="tripParameters">
+                    <label for="milesDay">Distance driving per day?:</label>
+                    <input id="milesDay" name="tripParameters"
+                        placeholder="miles per day">
+                    <label>Miles before gas stop?</label>
+                    <input id="milesGasStop" name="tripParameters"
+                        placeholder="miles">
+
                     <input type="submit" id="searchBtn" name="map">
                 </form>
             </div>
 
             <div id="map"></div>
         </div>
-        <div class="places">
-            <div class="campground"></div>
+        <div class="tripStops">
+            <div class="places"></div>
         </div>
     </div>
 
