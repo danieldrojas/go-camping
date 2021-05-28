@@ -2,9 +2,7 @@ import createInfoHTML from "./template/infoHtml.js"
 const addedCamps = [];
 
 export default function displayDetails(campground, isCampAdded) {
-    console.log(isCampAdded)
     if (isCampAdded) {
-        console.log("this are all my camps: ", addedCamps)
         document.getElementById("addBtn").addEventListener("click", event => {
             console.log("is this event: ", event)
 
@@ -12,15 +10,12 @@ export default function displayDetails(campground, isCampAdded) {
             let campSelectedId = event.target.defaultValue;
             console.log(campSelectedId)
             console.log(addedCamps)
-            addedCamps.forEach(camp => {
-                console.log(camp.place_id == campSelectedId)
-                if (camp.place_id == campSelectedId) {
+            for (const camp of addedCamps) {
+                const { place_id } = camp;
+                if (place_id == campSelectedId) {
                     campground = camp;
-                    console.log("inside campground: ", campground)
-                    console.log("campgroud after updating: ", campground)
 
-                    const { name, rating, adr_address, formatted_phone_number, distanceCampground, place_id, url } = campground;
-                    const infoHTML = createInfoHTML(name, rating, adr_address, formatted_phone_number, distanceCampground, place_id, url);
+                    const infoHTML = createInfoHTML(campground);
                     console.log(infoHTML);
 
 
@@ -33,14 +28,11 @@ export default function displayDetails(campground, isCampAdded) {
                     para.style.padding = "20px"
                     para.innerHTML = infoHTML;
                     div.appendChild(para)
-
+                    break;
                 }
-            })
-
-
+            }
         })
-
-        return
+        return;
     }
 
     addedCamps.push(campground)
