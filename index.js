@@ -100,29 +100,51 @@ function getAndSetStop() {
             }, campground => {
                 let distanceCampground;
                 //marker for each campground opt.
-                distanceCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location)
+                distanceCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location);
+                //attach to campground obj
                 campground.distanceCampground = Math.round(distanceCampground);
-                displayDetails(campground, addMarker, infoWindow)
+
+                //creates markers and infowindow
+                const content = displayDetails(campground)
+                const marker = addMarker(campground.geometry.location, "C", campground.name)
+                infoWindow(marker, content);
+
             });
         })
     });
 };
 
-function addMarker(position, label) {
+function addMarker(position, label, title) {
     return new google.maps.Marker({
         position,
         label,
         map,
+        title,
     });
 };
 
 function infoWindow(marker, content) {
+    let isCampAdded = false;
     const infoWindowConst = new google.maps.InfoWindow({
         content,
     });
-    marker.addListener("click", () => {
-        infoWindowConst.open(map, marker)
+
+
+    marker.addListener("click", (e) => {
+        infoWindowConst.open(map, marker);
     })
+
+    infoWindowConst.addListener("domready", () => {
+        isCampAdded = true;
+        // const addBtn = document.getElementById("addBtn");
+        // addBtn.addEventListener("click", e => {
+        //     console.log(e)
+        displayDetails(undefined, isCampAdded)
+        // })    
+    })
+
+
+
 }
 
 function getDistanceBetweenPoints(startLatLng, endLatLng) {
