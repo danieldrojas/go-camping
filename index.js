@@ -138,7 +138,7 @@ function infoWindow(marker, content) {
     //check if infowindow has created the node in the DOM
     infoWindowConst.addListener("domready", () => {
         isCampAdded = true;
-        displayDetails(undefined, typeOfStop)
+        displayDetails()
     })
 
 

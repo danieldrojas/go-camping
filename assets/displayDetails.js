@@ -1,29 +1,25 @@
 import createInfoHTML from "./template/infoHtml.js"
 const campgrounds = [];
 
-export default function displayDetails(campground, typeOfStop) {
+export default function displayDetails(campground) {
 
     if (campground) {
+        console.log("getting into if with campground: ", campground)
         campgrounds.push(campground);
-        let infoHtml = createInfoHTML(campground);
+        let infoHtml = createInfoHTML(campground, true);
+        console.log("and infoHtml: ", infoHtml)
 
         // TODO: order the campground options from closest distance.
         return infoHtml;
-    };
-
-
-    switch (typeOfStop) {
-        case "campground":
-            displayCampground();
-
-            break;
-        case "gas station":
-            console.log("gas station on work");
-            break
-        default:
-            console.log("default from switch on work");
+    } else {
+        console.log("without campground: ", campground)
+        displayCampground();
+        return;
     }
-    return;
+
+
+
+
 };
 
 
@@ -40,7 +36,7 @@ function displayCampground() {
             const { place_id } = campgroundItem;
             if (place_id == campSelectedId) {
                 campground = campgroundItem;
-                campgroundHtml = createInfoHTML(campground);
+                campgroundHtml = createInfoHTML(campground, false);
                 break;
             };
         };
@@ -53,5 +49,4 @@ function displayCampground() {
         para.innerHTML = campgroundHtml;
         div.appendChild(para);
     });
-    return;
 };
