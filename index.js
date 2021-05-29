@@ -132,7 +132,7 @@ function infoWindow(marker, content) {
         content,
     });
 
-    marker.addListener("click", (e) => {
+    marker.addListener("click", () => {
         infoWindowConst.open(map, marker);
     });
     //check if infowindow has created the node in the DOM

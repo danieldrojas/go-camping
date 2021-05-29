@@ -6,6 +6,7 @@ export default function createInfoHTML({ name, rating, adr_address, formatted_ph
         ${adr_address}<br>
   <span>${formatted_phone_number}</span>
         <span>${Math.round(distanceToCampground / 1609)} miles </span><br>
+                <label for="deleteBtn" name="campgroundOptions"> <input id="deleteBtn" name="campgroundOptions" type="checkbox" value=${place_id}>remove from trip</label>
           <a target="_blank" href="${url}"><button>More</button></a>
       `;
       }
