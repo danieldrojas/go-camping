@@ -29,13 +29,9 @@ function displayCampground() {
     let campground;
     let campgroundHtml;
     addBtn = document.getElementById("addBtn");
-    addBtn.checked = false;
-    console.log("checked?", addBtn.checked)
     addBtn.addEventListener("click", event => {
 
         console.log("is this event: ", event)
-        addBtn.checked ? false : true;
-        console.log(addBtn)
 
         let campSelectedId = event.target.defaultValue;
         console.log(campSelectedId)
@@ -58,11 +54,9 @@ function displayCampground() {
         div.appendChild(para);
 
         deleteBtn = document.getElementById("deleteBtn");
-        deleteBtn.checked = false;
 
         deleteBtn.addEventListener("click", event => {
             addBtn.checked = false;
-            deleteBtn.checked = true;
 
             if (event.target.nodeName === "INPUT" && event.target.id === "deleteBtn") {
                 console.log(event)
