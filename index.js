@@ -104,7 +104,7 @@ function getAndSetStop() {
                 //marker for each campground opt.
                 const distanceToCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location);
                 //attach to campground obj
-                campground.distanceToCampground = Math.round(distanceToCampground);
+                campground.distanceToCampgrounsd = Math.round(distanceToCampground);
 
                 //creates markers and infoWindow
                 const content = displayDetails(campground)
@@ -139,6 +139,8 @@ function infoWindow(marker, content) {
     infoWindowConst.addListener("domready", () => {
         isCampAdded = true;
         displayDetails()
+        google.maps.event.clearListeners(infoWindowConst, "domready");
+
     })
 
 

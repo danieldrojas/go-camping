@@ -32,6 +32,7 @@ function displayCampground() {
     addBtn.checked = false;
     console.log("checked?", addBtn.checked)
     addBtn.addEventListener("click", event => {
+
         console.log("is this event: ", event)
         addBtn.checked ? false : true;
         console.log(addBtn)
