@@ -13,6 +13,7 @@ export default function createInfoHTML({ name, rating, adr_address, formatted_ph
           `;
       }
       return `
+      <div class="infoWindow">
         <span><strong>${name}</strong></span >
         <span>${rating} stars</span><br>
         ${adr_address}<br>  
@@ -20,5 +21,6 @@ export default function createInfoHTML({ name, rating, adr_address, formatted_ph
         <span>${Math.round(distanceToCampground / 1609)} miles </span><br>
         <label for="addStop" name="campgroundOptions"> <input class="addStop" name="campgroundOptions" type="checkbox" value=${place_id}>Add to route</label>
         <a target="_blank" href="${url}"><button>More</button></a>
-      `;
+      </div>
+        `;
 };

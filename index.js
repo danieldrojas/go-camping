@@ -1,11 +1,28 @@
 //set the init function available to the window.
-window.initMap = initMap;
 import displayDetails from "./assets/displayDetails.js";
+import API_KEY_MAPS_GOOGLE from "./assets/apiKey.js";
+
+//map instance 
+let map;
+function initMap() {
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 35.2784, lng: -93.1338 },
+        zoom: 8,
+    });
+};
+
+window.initMap = initMap;
+
+const script = document.createElement("script")
+script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY_MAPS_GOOGLE}&libraries=geometry,places,localContext&callback=initMap`;
+script.async = true;
+document.head.appendChild(script)
+
+
 
 // all calculations are done using meters
 
 //variables and constants
-let map;
 let trip = {};
 const originField = document.getElementById("origin");
 const destinationField = document.getElementById("destination");
@@ -22,13 +39,13 @@ trip.origin = origin
 trip.destination = destination
 trip.traveledTarget = distanceToStop;
 
-//map instance 
-function initMap() {
-    map = new google.maps.Map(document.getElementById("map"), {
-        center: { lat: 35.2784, lng: -93.1338 },
-        zoom: 8,
-    });
-}
+// //map instance 
+// function initMap() {
+//     map = new google.maps.Map(document.getElementById("map"), {
+//         center: { lat: 35.2784, lng: -93.1338 },
+//         zoom: 8,
+//     });
+// }
 
 
 submitButton.addEventListener("click", e => {
