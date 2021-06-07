@@ -1,6 +1,6 @@
 //set the init function available to the window.
-import displayDetails from "./assets/displayDetails.js";
-import API_KEY_MAPS_GOOGLE from "./assets/apiKey.js";
+import displayDetails from "./displayDetails.js";
+import API_KEY_MAPS_GOOGLE from "./apiKey.js";
 
 //map instance 
 let map;
