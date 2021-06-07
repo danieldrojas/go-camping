@@ -4,9 +4,22 @@ let campgroundSelections = [];
 const divPlaces = document.querySelector(".places");
 const divMap = document.querySelector("#map")
 divMap.addEventListener("click", event => {
-    // console.log(event.target.nodeName, event.target.className, event.target.name)
-    // console.log(event.target.nodeName === "INPUT" && event.target.className === "addStop" &&
-    // event.target.name === "campgroundOptions")
+    console.log(event.target.nodeName)
+    if (event.target.nodeName === "AREA") {
+        document.querySelectorAll(".addStop").forEach(input => {
+            if (input.checked) {
+                console.log(input)
+                const stop = divPlaces.querySelector(`#${input.value}`)
+                console.log(stop)
+                if (!stop) {
+                    input.checked = false;
+                    input.disabled = false;
+                }
+            }
+        })
+    }
+
+
     if (event.target.nodeName === "INPUT" && event.target.className === "addStop" &&
         event.target.name === "campgroundOptions") {
         // console.log("click!")
@@ -25,9 +38,7 @@ divPlaces.addEventListener("click", event => {
 
 });
 export default function displayDetails(campground) {
-    console.log("displayDetails with campground: ", campground)
     campgrounds.push(campground);
-    console.log("campgrounds: ", campgrounds)
     let infoHtml = createInfoHTML(campground, true);
     // console.log("and infoHtml: ", infoHtml)
 
@@ -46,7 +57,8 @@ function displayCampground(event) {
     // console.log("the return event: ", event)
     if (event.target.checked) campgroundId.disabled = true;
 
-    const camp = createInfoHTML(findCampground(event.target.value), false);
+    const stop = findCampground(event.target.value);
+    const camp = createInfoHTML(stop, false);
     const div = document.createElement("div");
     div.setAttribute("class", "campground")
     div.innerHTML = camp;
@@ -58,20 +70,17 @@ function deleteStop(event) {
     document.getElementById(event.target.value).remove();
     const addStopBtn = document.querySelectorAll(".addStop");
     console.log(addStopBtn)
-    for (let infoWindowStop of addStopBtn) {
-        const { value } = infoWindowStop
-        if (value === event.target.value) {
-            console.log(infoWindowStop)
-            infoWindowStop.checked = false;
-            infoWindowStop.disabled = false;
-
-
+    if (addStopBtn.length) {
+        for (let infoWindowStop of addStopBtn) {
+            const { value } = infoWindowStop
+            if (value === event.target.value) {
+                console.log(infoWindowStop)
+                infoWindowStop.checked = false;
+                infoWindowStop.disabled = false;
+                return;
+            }
         }
-
     }
-
-
-
 }
 
 
