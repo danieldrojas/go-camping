@@ -59,7 +59,7 @@ function startRoute() {
             if (status === "OK") {
                 trip = response.routes[0].legs[0]; //assign the route to trip
 
-                console.log("trip after response: ", trip)
+                // console.log("trip after response: ", trip)
                 //set the map to resp 
                 directionsRenderer.setDirections(response);
                 directionsRenderer.setMap(map);
@@ -85,7 +85,7 @@ function getAndSetStop() {
         radius: 15000,
         name: "campground"
     }, places => {
-        console.log("places form nearby", places);
+        // console.log("places form nearby", places);
 
         let placesId = [];
         //TODO: find better way to make this accessible in display.js
@@ -98,13 +98,14 @@ function getAndSetStop() {
             placesService.getDetails({ //call to getDetails for place's details info;
                 placeId: place_id
             }, campground => {
+                // console.log("loops in getDetails")
 
                 const marker = addMarker(campground.geometry.location, "C", campground.name)
 
                 //marker for each campground opt.
                 const distanceToCampground = getDistanceBetweenPoints(stopLatLng, campground.geometry.location);
                 //attach to campground obj
-                campground.distanceToCampgrounsd = Math.round(distanceToCampground);
+                campground.distanceToCampground = Math.round(distanceToCampground);
 
                 //creates markers and infoWindow
                 const content = displayDetails(campground)
@@ -117,6 +118,7 @@ function getAndSetStop() {
 };
 
 function addMarker(position, label, title) {
+    // console.log('create a marker')
     return new google.maps.Marker({
         position,
         label,
@@ -126,22 +128,25 @@ function addMarker(position, label, title) {
 };
 
 function infoWindow(marker, content) {
-    let isCampAdded = false;
-    let typeOfStop = "campground";
+    // console.log("infoWindow function adding content")
     const infoWindowConst = new google.maps.InfoWindow({
         content,
     });
 
     marker.addListener("click", () => {
+        // console.log("when marker is clicked open infoWindow")
+        // console.log("click on marker added when infoWindow is called")
         infoWindowConst.open(map, marker);
-    });
-    //check if infowindow has created the node in the DOM
-    infoWindowConst.addListener("domready", () => {
-        isCampAdded = true;
-        displayDetails()
-        google.maps.event.clearListeners(infoWindowConst, "domready");
 
-    })
+        //check if infowindow has created the node in the DOM
+        infoWindowConst.addListener("domready", () => {
+            // console.log("infowindow domready, you may call the id's")
+            // displayDetails()
+            google.maps.event.clearListeners(infoWindowConst, "domready");
+
+        })
+    });
+
 
 
 
