@@ -16,7 +16,7 @@ divMap.addEventListener("click", event => {
                     input.disabled = false;
                 }
             }
-        })
+        }, false)
     }
 
 
@@ -36,7 +36,7 @@ divPlaces.addEventListener("click", event => {
     // console.log("divPlaces: ", event.target.value);
 
 
-});
+}, false);
 export default function displayDetails(campground) {
     campgrounds.push(campground);
     let infoHtml = createInfoHTML(campground, true);

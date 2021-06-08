@@ -55,7 +55,7 @@ submitButton.addEventListener("click", e => {
     // destination = destinationField.value;
     // distanceToStop = milesField.value * 1609.34; // convert miles to meters
     startRoute();
-})
+}, false)
 
 function startRoute() {
     const directionsService = new google.maps.DirectionsService();
