@@ -27,17 +27,18 @@ let trip = {};
 const originField = document.getElementById("origin");
 const destinationField = document.getElementById("destination");
 const submitButton = document.getElementById("searchBtn");
-const milesField = document.getElementById("miles-day");
+const milesField = document.getElementById("milesDay");
 let origin;
 let destination;
 let distanceToStop;
 //TODO: delete, these are for development 
-origin = "133+richland+circle+Russellville+AR";
-destination = "glacier national park, MT";
-distanceToStop = 400 * 1609;
-trip.origin = origin
-trip.destination = destination
-trip.traveledTarget = distanceToStop;
+// origin = "133+richland+circle+Russellville+AR";
+// destination = "glacier national park, MT";
+// distanceToStop = 400 * 1609;
+// trip.origin = origin
+// trip.destination = destination
+// trip.traveledTarget = distanceToStop;
+
 
 // //map instance 
 // function initMap() {
@@ -50,10 +51,11 @@ trip.traveledTarget = distanceToStop;
 
 submitButton.addEventListener("click", e => {
     e.preventDefault(); //for the form
-    //assign form values to vars
-    // origin = originField.value;
-    // destination = destinationField.value;
-    // distanceToStop = milesField.value * 1609.34; // convert miles to meters
+    // assign form values to vars
+    origin = originField.value;
+    destination = destinationField.value;
+    distanceToStop = milesField.value * 1609.34; // convert miles to meters
+
     startRoute();
 }, false)
 

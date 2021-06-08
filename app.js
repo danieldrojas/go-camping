@@ -1,13 +1,15 @@
 const { createServer } = require("http");
+const { createReadStream } = require("fs");
 
+const sendFile = (res, status, type, filePath) => {
+    res.writeHead(status, { "content-type": type });
+    createReadStream(filePath).pipe(res);
+}
 
+createServer((req, res) => {
+    switch (req.url) {
+        case "/": return sendFile(res, 200, "text/html", "./index.html")
+    }
+}).listen(3000);
 
-
-const server = createServer((req, res) => {
-    console.log("request was made: ", req.url)
-    res.writeHead(200, { "content-type": "text/html" });
-    res.write(req.url)
-    return res.end();
-});
-
-server.listen(8080)
+console.log("Listening port: ", 3000)
