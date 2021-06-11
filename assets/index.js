@@ -30,9 +30,9 @@ let origin;
 let destination;
 let distanceToStop;
 //TODO: delete, these are for development
-// origin = "133+richland+circle+Russellville+AR";
-// destination = "glacier national park, MT";
-// distanceToStop = 400 * 1609;
+origin = "133+richland+circle+Russellville+AR";
+destination = "duluth, ga";
+distanceToStop = 300 * 1609;
 // trip.origin = origin
 // trip.destination = destination
 // trip.traveledTarget = distanceToStop;
@@ -50,9 +50,9 @@ submitButton.addEventListener(
   (e) => {
     e.preventDefault(); //for the form
     // assign form values to vars
-    origin = originField.value;
-    destination = destinationField.value;
-    distanceToStop = milesField.value * 1609.34; // convert miles to meters
+    // origin = originField.value;
+    // destination = destinationField.value;
+    // distanceToStop = milesField.value * 1609.34; // convert miles to meters
 
     startRoute();
   },
@@ -107,7 +107,7 @@ function getAndSetStop() {
       name: "campground",
     },
     (places) => {
-      // console.log("places form nearby", places);
+      console.log("places form nearby", places);
 
       let placesId = [];
       //TODO: find better way to make this accessible in display.js
@@ -124,7 +124,7 @@ function getAndSetStop() {
           },
           (campground) => {
             // console.log("loops in getDetails")
-
+            console.log("details: ", campground);
             const marker = addMarker(
               campground.geometry.location,
               "C",

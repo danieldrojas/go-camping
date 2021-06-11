@@ -65,7 +65,6 @@ body,
   height: 75%;
   margin: 0;
   padding: 0;
-  text-align: center;
 }
 
 #map {
@@ -75,15 +74,39 @@ body,
   float: left;
 }
 
-p {
-  text-align: center;
-}
-
 .places .campground {
-  background-color: teal;
-  border-radius: 15px;
   width: 70%;
   margin: 50px;
+}
+
+.stopCard {
+  /* border-radius: 40px;
+  border-style: dotted;
+  border-width: 1px; */
+  width: 800px;
+  padding: 9px 20px 9px 20px;
+  margin-bottom: 0px;
+  background: #ffffff;
+  box-shadow: 2px 2px 2px 2px #dfdfdf;
+  box-sizing: border-box;
+  height: 200px !important;
+  overflow: hidden;
+}
+
+.stopInfo {
+  border-radius: 10px;
+  float: left;
+  /* margin-right: 10px; */
+  width: 350px;
+  padding: 10px 1px 10px 1px;
+}
+
+img {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  float: left;
+  border-radius: 5px;
 }
 
 .panel {
@@ -92,7 +115,7 @@ p {
   border-style: solid;
   border-radius: 20px;
   width: 20%;
-  height: 95%;
+  height: auto;
   float: left;
   text-align: left;
   padding: 15px;
