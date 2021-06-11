@@ -58,6 +58,9 @@ body {
   padding-top: 0;
 } */
 
+* {
+  font-family: "Roboto", "sans-serif";
+}
 html,
 body,
 .main,
@@ -67,6 +70,16 @@ body,
   padding: 0;
 }
 
+h1 {
+  text-align: center;
+}
+input {
+  margin: 5px;
+}
+
+#searchBtn {
+  margin-top: 10px;
+}
 #map {
   height: 100%;
   width: 70%;
