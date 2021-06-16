@@ -27,14 +27,7 @@ const milesField = document.getElementById("milesDay");
 let origin;
 let destination;
 let distanceToStop;
-//TODO: delete, these are for development
-// origin = "133+richland+circle+Russellville+AR";
-// destination = "duluth, ga";
-// distanceToStop = 300 * 1609;
-// trip.origin = origin
-// trip.destination = destination
-// trip.traveledTarget = distanceToStop;
-const inputSearch = [];
+
 document.querySelector("form").addEventListener(
   "submit",
   (e) => {
@@ -74,6 +67,8 @@ function startRoute() {
         //set the map to resp
         directionsRenderer.setDirections(response);
         directionsRenderer.setMap(map);
+        console.log(map.getZoom());
+
         //get the stop location on route
         if (distanceToStop) {
           getAndSetStop();
@@ -89,6 +84,8 @@ function startRoute() {
 function getAndSetStop() {
   // getRouteStep
   setStopToTrip();
+
+  //initialize placeService
   const placesService = new google.maps.places.PlacesService(map);
 
   placesService.nearbySearch(
@@ -102,6 +99,8 @@ function getAndSetStop() {
       let placesId = [];
       //TODO: find better way to make this accessible in display.js
       const { stop_point_coors: stopLatLng } = trip.stops[0];
+      map.setCenter(trip.stops[0].stop_point_coors);
+      map.setZoom(10);
 
       places.forEach((place) => {
         placesId.push(place.place_id);
@@ -118,7 +117,6 @@ function getAndSetStop() {
               "C",
               campground.name
             );
-
             //marker for each campground opt.
             const distanceToCampground = getDistanceBetweenPoints(
               stopLatLng,
@@ -188,5 +186,6 @@ function setStopToTrip() {
   let LatLngAtStop = stop.path[pathIndex];
 
   stop.stop_point_coors = LatLngAtStop;
+
   addMarker(LatLngAtStop, "S");
 }
