@@ -34,7 +34,7 @@ let distanceToStop;
 // trip.origin = origin
 // trip.destination = destination
 // trip.traveledTarget = distanceToStop;
-
+const inputSearch = [];
 document.querySelector("form").addEventListener(
   "submit",
   (e) => {
@@ -43,7 +43,11 @@ document.querySelector("form").addEventListener(
     origin = originField.value;
     destination = destinationField.value;
     distanceToStop = milesField.value * 1609.34; // convert miles to meters
+
     startRoute();
+    originField.value = "";
+    destinationField.value = "";
+    milesField.value = "";
   },
   false
 );
