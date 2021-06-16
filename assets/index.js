@@ -38,12 +38,11 @@ let distanceToStop;
 document.querySelector("form").addEventListener(
   "submit",
   (e) => {
-    e.preventDefault(); //for the form
-    // assign form values to vars
+    e.preventDefault();
+    // // assign form values to vars
     origin = originField.value;
     destination = destinationField.value;
     distanceToStop = milesField.value * 1609.34; // convert miles to meters
-
     startRoute();
   },
   false
