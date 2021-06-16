@@ -6,6 +6,7 @@
 
 h1 {
   text-align: center;
+  margin: 30px;
 }
 input {
   margin: 5px;
@@ -45,15 +46,3 @@ img {
   float: left;
   border-radius: 5px;
 }
-
-/* .panel {
-  margin: 0px 20px 0px 20px;
-  border-width: 0.1px;
-  border-style: solid;
-  border-radius: 20px;
-  width: 20%;
-  height: auto;
-  float: left;
-  text-align: left;
-  padding: 15px;
-} */

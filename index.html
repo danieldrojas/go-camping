@@ -19,30 +19,6 @@
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
             <a class="navbar-brand" href="#">GoCamping</a>
-            <button class="navbar-toggler" type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#navbarSupportedContent"
-                aria-controls="navbarSupportedContent" aria-expanded="false"
-                aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" aria-current="page"
-                            href="#">Home</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">Link</a>
-                    </li>
-
-                    <li class="nav-item">
-                        <a class="nav-link disabled" href="#" tabindex="-1"
-                            aria-disabled="true">Disabled</a>
-                    </li>
-                </ul>
-
-            </div>
         </div>
     </nav>
     <div class="container">
@@ -64,12 +40,7 @@
                                     aria-controls="home"
                                     aria-selected="true">Map</button>
                             </li>
-                            <li class="nav-item" role="presentation">
-                                <button class="nav-link" id="profile-tab"
-                                    data-bs-toggle="tab"
-                                    data-bs-target="#profile" type="button"
-                                    role="tab" aria-controls="profile"
-                                    aria-selected="false">Customize</button>
+
                             </li>
                             <li class="nav-item" role="presentation">
                                 <button class="nav-link" id="contact-tab"
@@ -86,22 +57,23 @@
                                     <h5 class="card-title">Find your next
                                         adventure!
                                     </h5>
-                                    <p class="card-text">Explore a general view
-                                        of your trip... </p>
+                                    <p class="card-text">Check campgrounds
+                                        available at your desired stop
+                                        distance... </p>
                                     <form>
                                         <div class="input-group m-2">
                                             <input id="origin" type="text"
                                                 class="form-control"
                                                 name="originGeneral"
-                                                placeholder="From">
+                                                placeholder="From" required>
                                             <input id="destination" type="text"
                                                 class="form-control"
                                                 name="destinationGeneral"
-                                                placeholder="To">
+                                                placeholder="To" required>
                                             <input id="milesDay" type="text"
                                                 class="form-control"
                                                 name="destinationGeneral"
-                                                placeholder="miles">
+                                                placeholder="miles to drive before stop">
                                             <input id=findBtn"
                                                 class="btn btn-outline-secondary"
                                                 type="submit" value="Find">
