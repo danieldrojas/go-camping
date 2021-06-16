@@ -1,4 +1,4 @@
-// import displayDetails from "./displayDetails.js";
+import displayDetails from "./displayDetails.js";
 import API_KEY_MAPS_GOOGLE from "./apiKey.js";
 
 //map instance
@@ -21,16 +21,16 @@ document.head.appendChild(script);
 
 //variables and constants
 let trip = {};
-const originField = document.getElementById("originGeneral");
-const destinationField = document.getElementById("destinationGeneral");
+const originField = document.getElementById("origin");
+const destinationField = document.getElementById("destination");
 const milesField = document.getElementById("milesDay");
 let origin;
 let destination;
 let distanceToStop;
 //TODO: delete, these are for development
-origin = "133+richland+circle+Russellville+AR";
-destination = "duluth, ga";
-distanceToStop = 300 * 1609;
+// origin = "133+richland+circle+Russellville+AR";
+// destination = "duluth, ga";
+// distanceToStop = 300 * 1609;
 // trip.origin = origin
 // trip.destination = destination
 // trip.traveledTarget = distanceToStop;
@@ -40,9 +40,9 @@ document.querySelector("form").addEventListener(
   (e) => {
     e.preventDefault(); //for the form
     // assign form values to vars
-    // origin = originField.value;
-    // destination = destinationField.value;
-    // distanceToStop = milesField.value * 1609.34; // convert miles to meters
+    origin = originField.value;
+    destination = destinationField.value;
+    distanceToStop = milesField.value * 1609.34; // convert miles to meters
 
     startRoute();
   },
