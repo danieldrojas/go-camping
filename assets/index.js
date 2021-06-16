@@ -7,7 +7,7 @@ let map;
 function initMap() {
   map = new google.maps.Map(document.getElementById("map"), {
     center: { lat: 35.2784, lng: -93.1338 },
-    zoom: 8,
+    zoom: 5,
   });
 }
 
@@ -18,41 +18,32 @@ script.src = `https://maps.googleapis.com/maps/api/js?key=${API_KEY_MAPS_GOOGLE}
 script.async = true;
 document.head.appendChild(script);
 
-// all calculations are done using meters
+// all calculations are done meters
 
 //variables and constants
 let trip = {};
 const originField = document.getElementById("origin");
 const destinationField = document.getElementById("destination");
-const submitButton = document.getElementById("searchBtn");
 const milesField = document.getElementById("milesDay");
 let origin;
 let destination;
 let distanceToStop;
 //TODO: delete, these are for development
-origin = "133+richland+circle+Russellville+AR";
-destination = "duluth, ga";
-distanceToStop = 300 * 1609;
+// origin = "133+richland+circle+Russellville+AR";
+// destination = "duluth, ga";
+// distanceToStop = 300 * 1609;
 // trip.origin = origin
 // trip.destination = destination
 // trip.traveledTarget = distanceToStop;
 
-// //map instance
-// function initMap() {
-//     map = new google.maps.Map(document.getElementById("map"), {
-//         center: { lat: 35.2784, lng: -93.1338 },
-//         zoom: 8,
-//     });
-// }
-
-submitButton.addEventListener(
-  "click",
+document.querySelector("form").addEventListener(
+  "submit",
   (e) => {
     e.preventDefault(); //for the form
     // assign form values to vars
-    // origin = originField.value;
-    // destination = destinationField.value;
-    // distanceToStop = milesField.value * 1609.34; // convert miles to meters
+    origin = originField.value;
+    destination = destinationField.value;
+    distanceToStop = milesField.value * 1609.34; // convert miles to meters
 
     startRoute();
   },
@@ -78,7 +69,6 @@ function startRoute() {
       if (status === "OK") {
         trip = response.routes[0].legs[0]; //assign the route to trip
 
-        // console.log("trip after response: ", trip)
         //set the map to resp
         directionsRenderer.setDirections(response);
         directionsRenderer.setMap(map);
@@ -107,8 +97,6 @@ function getAndSetStop() {
       name: "campground",
     },
     (places) => {
-      console.log("places form nearby", places);
-
       let placesId = [];
       //TODO: find better way to make this accessible in display.js
       const { stop_point_coors: stopLatLng } = trip.stops[0];
@@ -123,8 +111,6 @@ function getAndSetStop() {
             placeId: place_id,
           },
           (campground) => {
-            // console.log("loops in getDetails")
-            console.log("details: ", campground);
             const marker = addMarker(
               campground.geometry.location,
               "C",
@@ -151,7 +137,6 @@ function getAndSetStop() {
 }
 
 function addMarker(position, label, title) {
-  // console.log('create a marker')
   return new google.maps.Marker({
     position,
     label,
@@ -161,20 +146,14 @@ function addMarker(position, label, title) {
 }
 
 function infoWindow(marker, content) {
-  // console.log("infoWindow function adding content")
   const infoWindowConst = new google.maps.InfoWindow({
     content,
   });
 
   marker.addListener("click", () => {
-    // console.log("when marker is clicked open infoWindow")
-    // console.log("click on marker added when infoWindow is called")
     infoWindowConst.open(map, marker);
 
-    //check if infowindow has created the node in the DOM
     infoWindowConst.addListener("domready", () => {
-      // console.log("infowindow domready, you may call the id's")
-      // displayDetails()
       google.maps.event.clearListeners(infoWindowConst, "domready");
     });
   });
@@ -185,10 +164,6 @@ function getDistanceBetweenPoints(startLatLng, endLatLng) {
     startLatLng,
     endLatLng
   );
-}
-
-function getDistancePath(path) {
-  return google.maps.geometry.spherical.computeLength(path);
 }
 
 function setStopToTrip() {

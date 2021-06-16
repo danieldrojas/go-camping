@@ -8,11 +8,10 @@ export default function createInfoHTML(
     distanceToCampground = "",
     place_id = "00000",
     url = "",
-    photos,
-    icon,
+    photos = [],
   }
 ) {
-  console.log(photos[0].getUrl());
+  photos.length ? (photos = photos[0].getUrl()) : "";
   if (!isInfoWindow) {
     return `
       <div id="${place_id}">
@@ -26,7 +25,7 @@ export default function createInfoHTML(
             <label for="deleteStop" name="campgroundOptions"> <input class="deleteStop" name="campgroundOptions" type="checkbox" value=${place_id}>remove from trip</label>
             <a target="_blank" href=${url}><button>More</button></a>
           </div>
-           <img src=${photos[0].getUrl()}/>
+           <img src=${photos} alt="Picture of stop: ${name}"/>
 
         </div>
      </div>
