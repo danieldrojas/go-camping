@@ -34,14 +34,14 @@ document.querySelector("form").addEventListener(
   (e) => {
     e.preventDefault();
     // // assign form values to vars
-    origin = originField.value;
-    destination = destinationField.value;
+    // origin = originField.value;
+    // destination = destinationField.value;
     milesToDrive = milesField.value * 1609.34; // convert miles to meters
-    // (origin = "russellville, ar"),
-    //   (destination = "duluth, ga"),
-    //   (milesToDrive = 100 * 1609.34);
+    (origin = "russellville, ar"),
+      (destination = "duluth, ga"),
+      //   (milesToDrive = 100 * 1609.34);
 
-    startRoute();
+      startRoute();
     originField.value = "";
     destinationField.value = "";
     milesField.value = "";
@@ -67,6 +67,22 @@ function startRoute() {
     (response, status) => {
       if (status === "OK") {
         trip = response.routes[0].legs[0]; //assign the route to trip
+        if (
+          milesToDrive >= trip.distance.value ||
+          trip.distance.value - milesToDrive <= 100 * 1609.34
+        ) {
+          if (
+            !confirm(
+              `You're only ${Math.round(
+                (trip.distance.value - milesToDrive) / 1609.34
+              )} miles away do you want to stop here?`
+            )
+          ) {
+            return;
+          }
+        }
+
+        console.log(trip);
 
         //set the map to resp
         directionsRenderer.setDirections(response);
@@ -92,6 +108,7 @@ function getAndSetStop() {
   const placesService = new google.maps.places.PlacesService(map);
 
   console.log(trip);
+
   placesService.nearbySearch(
     {
       //nearbySearch call for places Id
@@ -184,11 +201,17 @@ function stopIteration(stopNumber) {
   let stop;
   //n: stop number
   console.log("calling stopIteration");
-  console.log("with n: ", stopNumber);
+  console.log(
+    "tripDistance: ",
+    trip.distance.value / 1609,
+    " trip.distance.value / milesToDriv: ",
+    trip.distance.value / milesToDrive
+  );
+  console.log("with stopNumber: ", stopNumber);
   console.log("with numberOfStops: ", numberOfStops);
-  console.log("(n >= numberOfStops ", stopNumber >= numberOfStops);
+  console.log("(stopNumber >= numberOfStops ", stopNumber > numberOfStops);
 
-  if (stopNumber >= numberOfStops) return;
+  if (stopNumber > numberOfStops) return;
 
   let total = 0;
   for (let i = 0; i < trip.steps.length; i++) {
