@@ -34,17 +34,17 @@ document.querySelector("form").addEventListener(
   (e) => {
     e.preventDefault();
     // // assign form values to vars
-    // origin = originField.value;
-    // destination = destinationField.value;
-    // milesToDrive = milesField.value * 1609.34; // convert miles to meters
-    (origin = "russellville, ar"),
-      (destination = "duluth, ga"),
-      (milesToDrive = 100 * 1609.34);
+    origin = originField.value;
+    destination = destinationField.value;
+    milesToDrive = milesField.value * 1609.34; // convert miles to meters
+    // (origin = "russellville, ar"),
+    //   (destination = "duluth, ga"),
+    //   (milesToDrive = 100 * 1609.34);
 
     startRoute();
-    // originField.value = "";
-    // destinationField.value = "";
-    // milesField.value = "";
+    originField.value = "";
+    destinationField.value = "";
+    milesField.value = "";
   },
   false
 );
@@ -95,7 +95,7 @@ function getAndSetStop() {
   placesService.nearbySearch(
     {
       //nearbySearch call for places Id
-      location: trip.myStops[3].stop_point_coors,
+      location: trip.myStops[0].stop_point_coors,
       radius: 15000,
       name: "campground",
     },
@@ -103,7 +103,7 @@ function getAndSetStop() {
       console.log(places);
       let placesId = [];
       //TODO: find better way to make this accessible in display.js
-      const { stop_point_coors: stopLatLng } = trip.myStops[3];
+      const { stop_point_coors: stopLatLng } = trip.myStops[0];
       // map.setCenter(trip.myStops[0].stop_point_coors);
       // map.setZoom(10);
 
