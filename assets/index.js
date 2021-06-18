@@ -26,21 +26,25 @@ const destinationField = document.getElementById("destination");
 const milesField = document.getElementById("milesDay");
 let origin;
 let destination;
-let distanceToStop;
+let milesToDrive;
+const myStops = [];
 
 document.querySelector("form").addEventListener(
   "submit",
   (e) => {
     e.preventDefault();
     // // assign form values to vars
-    origin = originField.value;
-    destination = destinationField.value;
-    distanceToStop = milesField.value * 1609.34; // convert miles to meters
+    // origin = originField.value;
+    // destination = destinationField.value;
+    // milesToDrive = milesField.value * 1609.34; // convert miles to meters
+    (origin = "russellville, ar"),
+      (destination = "duluth, ga"),
+      (milesToDrive = 100 * 1609.34);
 
     startRoute();
-    originField.value = "";
-    destinationField.value = "";
-    milesField.value = "";
+    // originField.value = "";
+    // destinationField.value = "";
+    // milesField.value = "";
   },
   false
 );
@@ -51,7 +55,7 @@ function startRoute() {
 
   trip.origin = origin;
   trip.destination = destination;
-  trip.distanceToStop = distanceToStop;
+  trip.milesToDrive = milesToDrive;
 
   //request the route to google route api
   directionsService.route(
@@ -67,10 +71,9 @@ function startRoute() {
         //set the map to resp
         directionsRenderer.setDirections(response);
         directionsRenderer.setMap(map);
-        console.log(map.getZoom());
 
         //get the stop location on route
-        if (distanceToStop) {
+        if (milesToDrive) {
           getAndSetStop();
         }
       } else {
@@ -80,7 +83,7 @@ function startRoute() {
   );
 }
 
-//get a point on the route at distanceToStop
+//get a point on the route at milesToDrive
 function getAndSetStop() {
   // getRouteStep
   setStopToTrip();
@@ -88,19 +91,21 @@ function getAndSetStop() {
   //initialize placeService
   const placesService = new google.maps.places.PlacesService(map);
 
+  console.log(trip);
   placesService.nearbySearch(
     {
       //nearbySearch call for places Id
-      location: trip.stops[0].stop_point_coors,
+      location: trip.myStops[3].stop_point_coors,
       radius: 15000,
       name: "campground",
     },
     (places) => {
+      console.log(places);
       let placesId = [];
       //TODO: find better way to make this accessible in display.js
-      const { stop_point_coors: stopLatLng } = trip.stops[0];
-      map.setCenter(trip.stops[0].stop_point_coors);
-      map.setZoom(10);
+      const { stop_point_coors: stopLatLng } = trip.myStops[3];
+      // map.setCenter(trip.myStops[0].stop_point_coors);
+      // map.setZoom(10);
 
       places.forEach((place) => {
         placesId.push(place.place_id);
@@ -112,6 +117,7 @@ function getAndSetStop() {
             placeId: place_id,
           },
           (campground) => {
+            console.log(campground);
             const marker = addMarker(
               campground.geometry.location,
               "C",
@@ -167,25 +173,55 @@ function getDistanceBetweenPoints(startLatLng, endLatLng) {
 }
 
 function setStopToTrip() {
+  let n = 1;
+  //n: stop number
+
+  stopIteration(n);
+}
+
+function stopIteration(stopNumber) {
+  const numberOfStops = Math.floor(trip.distance.value / milesToDrive);
+  let stop;
+  //n: stop number
+  console.log("calling stopIteration");
+  console.log("with n: ", stopNumber);
+  console.log("with numberOfStops: ", numberOfStops);
+  console.log("(n >= numberOfStops ", stopNumber >= numberOfStops);
+
+  if (stopNumber >= numberOfStops) return;
+
   let total = 0;
   for (let i = 0; i < trip.steps.length; i++) {
     total += trip.steps[i].distance.value;
-    if (total >= distanceToStop) {
-      trip.steps[i].distance.distance_from_origin = total;
-      trip.stops = [trip.steps[i]];
-      break;
+    console.log("inside for loop ", i, "total: ", total / 1609);
+
+    if (total >= milesToDrive * stopNumber) {
+      console.log(
+        "inside the if total >= milesToDrive * stopNumber: ",
+        total >= milesToDrive * stopNumber
+      );
+      stop = trip.steps[i];
+      stop.distance.distance_from_origin = total;
+      let distanceTrack = stop.distance.value;
+      let distance_from_origin = stop.distance.distance_from_origin;
+      let ratio =
+        (milesToDrive * stopNumber - (distance_from_origin - distanceTrack)) /
+        distanceTrack;
+      //Aprox LatLng at stop
+      console.log("ratio: ", ratio);
+      console.log("distanceTrack: ", distanceTrack / 1609);
+      console.log("distance_from_origin: ", distance_from_origin / 1609);
+      console.log("milesToDrive: ", milesToDrive / 1609);
+      let pathIndex = Math.ceil(ratio * stop.path.length);
+      console.log("stop.path[pathIndex] : ", stop.path[pathIndex]);
+      let LatLngAtStop = stop.path[pathIndex];
+
+      stop.stop_point_coors = LatLngAtStop;
+      myStops.push(stop);
+      trip.myStops = myStops;
+      addMarker(LatLngAtStop, "S");
+      console.log("n before calling the function again: ", stopNumber);
+      return stopIteration(stopNumber + 1);
     }
   }
-  let stop = trip.stops[0];
-  let distanceTrack = stop.distance.value;
-  let distance_from_origin = stop.distance.distance_from_origin;
-  let ratio =
-    (distanceToStop - (distance_from_origin - distanceTrack)) / distanceTrack;
-  //Aprox LatLng at stop
-  let pathIndex = Math.ceil(ratio * stop.path.length);
-  let LatLngAtStop = stop.path[pathIndex];
-
-  stop.stop_point_coors = LatLngAtStop;
-
-  addMarker(LatLngAtStop, "S");
 }
