@@ -108,55 +108,59 @@ function getAndSetStop() {
   const placesService = new google.maps.places.PlacesService(map);
 
   console.log(trip);
+  trip.myStops.forEach((stop) => {
+    placesService.nearbySearch(
+      {
+        //nearbySearch call for places Id
+        location: stop.stop_point_coors,
+        radius: 15000,
+        name: "campground",
+      },
+      (places) => {
+        console.log(places);
+        if (!places) return;
+        let placesId = [];
+        //TODO: find better way to make this accessible in display.js
+        const { stop_point_coors: stopLatLng } = stop;
+        // map.setCenter(trip.myStops[0].stop_point_coors);
+        // map.setZoom(10);
 
-  placesService.nearbySearch(
-    {
-      //nearbySearch call for places Id
-      location: trip.myStops[0].stop_point_coors,
-      radius: 15000,
-      name: "campground",
-    },
-    (places) => {
-      console.log(places);
-      let placesId = [];
-      //TODO: find better way to make this accessible in display.js
-      const { stop_point_coors: stopLatLng } = trip.myStops[0];
-      // map.setCenter(trip.myStops[0].stop_point_coors);
-      // map.setZoom(10);
+        places.forEach((place) => {
+          placesId.push(place.place_id);
+        });
+        placesId.forEach((place_id) => {
+          placesService.getDetails(
+            {
+              //call to getDetails for place's details info;
+              placeId: place_id,
+            },
+            (campground) => {
+              console.log(campground);
+              if (!campground) return;
+              const marker = addMarker(
+                campground.geometry.location,
+                "C",
+                campground.name
+              );
+              //marker for each campground opt.
+              const distanceToCampground = getDistanceBetweenPoints(
+                stopLatLng,
+                campground.geometry.location
+              );
+              //attach to campground obj
+              campground.distanceToCampground =
+                Math.round(distanceToCampground);
 
-      places.forEach((place) => {
-        placesId.push(place.place_id);
-      });
-      placesId.forEach((place_id) => {
-        placesService.getDetails(
-          {
-            //call to getDetails for place's details info;
-            placeId: place_id,
-          },
-          (campground) => {
-            console.log(campground);
-            const marker = addMarker(
-              campground.geometry.location,
-              "C",
-              campground.name
-            );
-            //marker for each campground opt.
-            const distanceToCampground = getDistanceBetweenPoints(
-              stopLatLng,
-              campground.geometry.location
-            );
-            //attach to campground obj
-            campground.distanceToCampground = Math.round(distanceToCampground);
+              //creates markers and infoWindow
+              const content = displayDetails(campground);
 
-            //creates markers and infoWindow
-            const content = displayDetails(campground);
-
-            infoWindow(marker, content);
-          }
-        );
-      });
-    }
-  );
+              infoWindow(marker, content);
+            }
+          );
+        });
+      }
+    );
+  });
 }
 
 function addMarker(position, label, title) {
