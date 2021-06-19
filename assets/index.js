@@ -1,5 +1,6 @@
 import displayDetails from "./displayDetails.js";
 import API_KEY_MAPS_GOOGLE from "./apiKey.js";
+import instructions from "./template/routeInstructions.js";
 
 //map instance
 let map;
@@ -28,6 +29,24 @@ let origin;
 let destination;
 let milesToDrive;
 const myStops = [];
+
+//home-tab:
+document.querySelector("#home-tab").addEventListener("click", (event) => {
+  console.log(event.target.id === "home-tab");
+  if (event.target.id === "home-tab") {
+    document.querySelector("#myTabContent").style.display = "none";
+  }
+});
+
+document
+  .querySelector("#instructions-tab")
+  .addEventListener("click", (event) => {
+    console.log(event.target.id === "instructions-tab");
+    if (event.target.id === "instructions-tab") {
+      document.querySelector("#home").style.display = "none";
+      document.querySelector("#instructions");
+    }
+  });
 
 document.querySelector("form").addEventListener(
   "submit",
@@ -67,6 +86,7 @@ function startRoute() {
     (response, status) => {
       if (status === "OK") {
         trip = response.routes[0].legs[0]; //assign the route to trip
+        instructions(trip.steps);
         if (
           milesToDrive >= trip.distance.value ||
           trip.distance.value - milesToDrive <= 100 * 1609.34
