@@ -30,23 +30,28 @@ let destination;
 let milesToDrive;
 const myStops = [];
 
-//home-tab:
-document.querySelector("#home-tab").addEventListener("click", (event) => {
-  console.log(event.target.id === "home-tab");
-  if (event.target.id === "home-tab") {
-    document.querySelector("#myTabContent").style.display = "none";
-  }
-});
+//map-tab:
+// document.querySelector("#map-tab").addEventListener("click", (event) => {
+//   console.log(event.target.id === "map-tab");
+//   if (event.target.id === "map-tab") {
+//     // document.querySelector("#myTabContent").style.display = "none";
+//   }
+// });
 
-document
-  .querySelector("#instructions-tab")
-  .addEventListener("click", (event) => {
-    console.log(event.target.id === "instructions-tab");
-    if (event.target.id === "instructions-tab") {
-      document.querySelector("#home").style.display = "none";
-      document.querySelector("#instructions");
-    }
-  });
+// const instructionsTab = document.querySelector("#instructions-tab");
+
+// instructionsTab.addEventListener("click", (event) => {
+//   console.log(event.target.id === "instructions-tab");
+//   if (event.target.id === "instructions-tab") {
+//     const mapTab = document.querySelector("#map");
+//     mapTab.style.display = "none";
+
+//     instructionsTab.innerText = "Instructions";
+//     console.log("after innerText");
+
+//     // mapTab.style.display = "block";
+//   }
+// });
 
 document.querySelector("form").addEventListener(
   "submit",
