@@ -1,6 +1,6 @@
 import displayDetails from "./displayDetails.js";
 import API_KEY_MAPS_GOOGLE from "./apiKey.js";
-import instructions from "./template/routeInstructions.js";
+import directions from "./template/directions.js";
 
 //map instance
 let map;
@@ -29,35 +29,42 @@ let origin;
 let destination;
 let milesToDrive;
 const myStops = [];
+const directionsTab = document.querySelector("#directions-tab");
+const mapForm = document.querySelector("#mapForm");
+const directionsData = document.querySelector("#directionsData");
 
 //map-tab:
-// document.querySelector("#map-tab").addEventListener("click", (event) => {
-//   console.log(event.target.id === "map-tab");
-//   if (event.target.id === "map-tab") {
-//     // document.querySelector("#myTabContent").style.display = "none";
-//   }
-// });
+document.querySelector("#map-tab").addEventListener("click", (event) => {
+  console.log(event.target.id === "map-tab");
+  if (event.target.id === "map-tab") {
+    mapForm.style.display = "block";
+    directionsData.style.display = "none";
+  }
+});
 
-// const instructionsTab = document.querySelector("#instructions-tab");
+directionsTab.addEventListener("click", (event) => {
+  console.log(event.target.id === "directions-tab");
+  if (event.target.id === "directions-tab") {
+    mapForm.style.display = "none";
+    directionsData.style.display = "block";
+    // mapTab.style.display = "block";
+    console.log(trip);
 
-// instructionsTab.addEventListener("click", (event) => {
-//   console.log(event.target.id === "instructions-tab");
-//   if (event.target.id === "instructions-tab") {
-//     const mapTab = document.querySelector("#map");
-//     mapTab.style.display = "none";
-
-//     instructionsTab.innerText = "Instructions";
-//     console.log("after innerText");
-
-//     // mapTab.style.display = "block";
-//   }
-// });
+    if (trip.routeDirectionsHtml) {
+      console.log(trip.routeDirectionsHtml());
+      directionsData.innerHTML = trip.routeDirectionsHtml();
+    } else {
+      directionsData.innerHTML = `<p>You need to search to see directions</p>`;
+    }
+    console.log(trip);
+  }
+});
 
 document.querySelector("form").addEventListener(
   "submit",
   (e) => {
     e.preventDefault();
-    // // assign form values to vars
+    // assign form values to vars
     origin = originField.value;
     destination = destinationField.value;
     milesToDrive = milesField.value * 1609.34; // convert miles to meters
@@ -91,7 +98,8 @@ function startRoute() {
     (response, status) => {
       if (status === "OK") {
         trip = response.routes[0].legs[0]; //assign the route to trip
-        instructions(trip.steps);
+        trip.routeDirectionsHtml = directions(trip.steps);
+
         if (
           milesToDrive >= trip.distance.value ||
           trip.distance.value - milesToDrive <= 100 * 1609.34
@@ -106,8 +114,6 @@ function startRoute() {
             return;
           }
         }
-
-        console.log(trip);
 
         //set the map to resp
         directionsRenderer.setDirections(response);
@@ -132,7 +138,6 @@ function getAndSetStop() {
   //initialize placeService
   const placesService = new google.maps.places.PlacesService(map);
 
-  console.log(trip);
   trip.myStops.forEach((stop) => {
     placesService.nearbySearch(
       {
@@ -142,7 +147,6 @@ function getAndSetStop() {
         name: "campground",
       },
       (places) => {
-        console.log(places);
         if (!places) return;
         let placesId = [];
         //TODO: find better way to make this accessible in display.js
@@ -160,7 +164,6 @@ function getAndSetStop() {
               placeId: place_id,
             },
             (campground) => {
-              console.log(campground);
               if (!campground) return;
               const marker = addMarker(
                 campground.geometry.location,
@@ -229,29 +232,13 @@ function stopIteration(stopNumber) {
   const numberOfStops = Math.floor(trip.distance.value / milesToDrive);
   let stop;
   //n: stop number
-  console.log("calling stopIteration");
-  console.log(
-    "tripDistance: ",
-    trip.distance.value / 1609,
-    " trip.distance.value / milesToDriv: ",
-    trip.distance.value / milesToDrive
-  );
-  console.log("with stopNumber: ", stopNumber);
-  console.log("with numberOfStops: ", numberOfStops);
-  console.log("(stopNumber >= numberOfStops ", stopNumber > numberOfStops);
-
   if (stopNumber > numberOfStops) return;
 
   let total = 0;
   for (let i = 0; i < trip.steps.length; i++) {
     total += trip.steps[i].distance.value;
-    console.log("inside for loop ", i, "total: ", total / 1609);
 
     if (total >= milesToDrive * stopNumber) {
-      console.log(
-        "inside the if total >= milesToDrive * stopNumber: ",
-        total >= milesToDrive * stopNumber
-      );
       stop = trip.steps[i];
       stop.distance.distance_from_origin = total;
       let distanceTrack = stop.distance.value;
@@ -260,19 +247,13 @@ function stopIteration(stopNumber) {
         (milesToDrive * stopNumber - (distance_from_origin - distanceTrack)) /
         distanceTrack;
       //Aprox LatLng at stop
-      console.log("ratio: ", ratio);
-      console.log("distanceTrack: ", distanceTrack / 1609);
-      console.log("distance_from_origin: ", distance_from_origin / 1609);
-      console.log("milesToDrive: ", milesToDrive / 1609);
       let pathIndex = Math.ceil(ratio * stop.path.length);
-      console.log("stop.path[pathIndex] : ", stop.path[pathIndex]);
       let LatLngAtStop = stop.path[pathIndex];
 
       stop.stop_point_coors = LatLngAtStop;
       myStops.push(stop);
       trip.myStops = myStops;
       addMarker(LatLngAtStop, "S");
-      console.log("n before calling the function again: ", stopNumber);
       return stopIteration(stopNumber + 1);
     }
   }
