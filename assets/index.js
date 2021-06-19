@@ -68,9 +68,9 @@ document.querySelector("form").addEventListener(
     origin = originField.value;
     destination = destinationField.value;
     milesToDrive = milesField.value * 1609.34; // convert miles to meters
-    // (origin = "russellville, ar"),
-    //   (destination = "duluth, ga"),
-    //   (milesToDrive = 100 * 1609.34);
+    (origin = "russellville, ar"),
+      (destination = "duluth, ga"),
+      (milesToDrive = 200 * 1609.34);
 
     startRoute();
     originField.value = "";
@@ -139,6 +139,7 @@ function getAndSetStop() {
   const placesService = new google.maps.places.PlacesService(map);
 
   trip.myStops.forEach((stop) => {
+    console.log(stop);
     placesService.nearbySearch(
       {
         //nearbySearch call for places Id
@@ -246,14 +247,33 @@ function stopIteration(stopNumber) {
       let ratio =
         (milesToDrive * stopNumber - (distance_from_origin - distanceTrack)) /
         distanceTrack;
-      //Aprox LatLng at stop
+      //Approximate LatLng at stop
       let pathIndex = Math.ceil(ratio * stop.path.length);
       let LatLngAtStop = stop.path[pathIndex];
 
       stop.stop_point_coors = LatLngAtStop;
       myStops.push(stop);
       trip.myStops = myStops;
-      addMarker(LatLngAtStop, "S");
+
+      //reversed geocoding
+
+      const geocoder = new google.maps.Geocoder();
+
+      geocoder.geocode({ location: LatLngAtStop }, (results, status) => {
+        if (status === "OK") {
+          if (results[0]) {
+            console.log(results[0]);
+            const formatted_address =
+              "<span><strong>Stop Point: </strong></span>" +
+              results[0].formatted_address;
+            infoWindow(addMarker(LatLngAtStop, "S"), formatted_address);
+          } else {
+            window.alert("No results found");
+          }
+        } else {
+          window.alert("Geocoder failed due to: " + status);
+        }
+      });
       return stopIteration(stopNumber + 1);
     }
   }
