@@ -38,6 +38,7 @@ divPlaces.addEventListener(
 );
 export default function displayDetails(campground) {
   campgrounds.push(campground);
+  console.log(campground);
   let infoHtml = createInfoHTML(true, campground);
 
   // TODO: order the campground options from closest distance.

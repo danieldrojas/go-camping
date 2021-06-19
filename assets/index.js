@@ -35,7 +35,6 @@ const directionsData = document.querySelector("#directionsData");
 
 //map-tab:
 document.querySelector("#map-tab").addEventListener("click", (event) => {
-  console.log(event.target.id === "map-tab");
   if (event.target.id === "map-tab") {
     mapForm.style.display = "block";
     directionsData.style.display = "none";
@@ -43,20 +42,16 @@ document.querySelector("#map-tab").addEventListener("click", (event) => {
 });
 
 directionsTab.addEventListener("click", (event) => {
-  console.log(event.target.id === "directions-tab");
   if (event.target.id === "directions-tab") {
     mapForm.style.display = "none";
     directionsData.style.display = "block";
     // mapTab.style.display = "block";
-    console.log(trip);
 
     if (trip.routeDirectionsHtml) {
-      console.log(trip.routeDirectionsHtml());
       directionsData.innerHTML = trip.routeDirectionsHtml();
     } else {
       directionsData.innerHTML = `<p>You need to search to see directions</p>`;
     }
-    console.log(trip);
   }
 });
 
@@ -68,9 +63,9 @@ document.querySelector("form").addEventListener(
     origin = originField.value;
     destination = destinationField.value;
     milesToDrive = milesField.value * 1609.34; // convert miles to meters
-    (origin = "russellville, ar"),
-      (destination = "duluth, ga"),
-      (milesToDrive = 200 * 1609.34);
+    // (origin = "russellville, ar"),
+    //   (destination = "duluth, ga"),
+    //   (milesToDrive = 200 * 1609.34);
 
     startRoute();
     originField.value = "";
@@ -139,7 +134,6 @@ function getAndSetStop() {
   const placesService = new google.maps.places.PlacesService(map);
 
   trip.myStops.forEach((stop) => {
-    console.log(stop);
     placesService.nearbySearch(
       {
         //nearbySearch call for places Id
@@ -262,7 +256,6 @@ function stopIteration(stopNumber) {
       geocoder.geocode({ location: LatLngAtStop }, (results, status) => {
         if (status === "OK") {
           if (results[0]) {
-            console.log(results[0]);
             const formatted_address =
               "<span><strong>Stop Point: </strong></span>" +
               results[0].formatted_address;
