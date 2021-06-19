@@ -33,7 +33,7 @@ export default function createInfoHTML(
   }
   return `
       <div class="infoWindow">
-        <span><strong>${name}</strong></span >
+        <span><strong>Campground:${name}</strong></span >
         <span>${rating} stars</span><br>
         ${adr_address}<br>
         <span>${formatted_phone_number}</span>
