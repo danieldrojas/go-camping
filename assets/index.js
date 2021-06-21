@@ -138,7 +138,7 @@ function getAndSetStop() {
       {
         //nearbySearch call for places Id
         location: stop.stop_point_coors,
-        radius: 15000,
+        radius: 10 * 1609.34,
         name: "campground",
       },
       (places) => {
@@ -216,6 +216,19 @@ function getDistanceBetweenPoints(startLatLng, endLatLng) {
   );
 }
 
+function drawCircle(LatLngAtStop) {
+  const cityCircle = new google.maps.Circle({
+    strokeColor: "#d36832",
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: "#873e23",
+    fillOpacity: 0.5,
+    map,
+    center: LatLngAtStop,
+    radius: 10 * 1609.34,
+  });
+}
+
 function setStopToTrip() {
   let n = 1;
   //n: stop number
@@ -267,6 +280,8 @@ function stopIteration(stopNumber) {
           window.alert("Geocoder failed due to: " + status);
         }
       });
+      drawCircle(LatLngAtStop);
+
       return stopIteration(stopNumber + 1);
     }
   }
