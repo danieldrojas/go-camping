@@ -63,9 +63,9 @@ document.querySelector("form").addEventListener(
     origin = originField.value;
     destination = destinationField.value;
     milesToDrive = milesField.value * 1609.34; // convert miles to meters
-    // (origin = "russellville, ar"),
-    //   (destination = "duluth, ga"),
-    //   (milesToDrive = 200 * 1609.34);
+    (origin = "russellville, ar"),
+      (destination = "duluth, ga"),
+      (milesToDrive = 200 * 1609.34);
 
     startRoute();
     originField.value = "";
@@ -152,6 +152,7 @@ function getAndSetStop() {
         places.forEach((place) => {
           placesId.push(place.place_id);
         });
+
         placesId.forEach((place_id) => {
           placesService.getDetails(
             {
@@ -159,25 +160,28 @@ function getAndSetStop() {
               placeId: place_id,
             },
             (campground) => {
-              if (!campground) return;
-              const marker = addMarker(
-                campground.geometry.location,
-                "C",
-                campground.name
-              );
-              //marker for each campground opt.
-              const distanceToCampground = getDistanceBetweenPoints(
-                stopLatLng,
-                campground.geometry.location
-              );
-              //attach to campground obj
-              campground.distanceToCampground =
-                Math.round(distanceToCampground);
+              getDetails(campground);
 
-              //creates markers and infoWindow
-              const content = displayDetails(campground);
+              function getDetails(campground) {
+                if (!campground) return;
+                const marker = addMarker(
+                  campground.geometry.location,
+                  "C",
+                  campground.name
+                );
+                //marker for each campground opt.
+                const distanceToCampground = getDistanceBetweenPoints(
+                  stopLatLng,
+                  campground.geometry.location
+                );
+                //attach to campground obj
+                campground.distanceToCampground =
+                  Math.round(distanceToCampground);
 
-              infoWindow(marker, content);
+                //creates markers and infoWindow
+                const content = displayDetails(campground);
+                infoWindow(marker, content);
+              }
             }
           );
         });
@@ -269,9 +273,11 @@ function stopIteration(stopNumber) {
       geocoder.geocode({ location: LatLngAtStop }, (results, status) => {
         if (status === "OK") {
           if (results[0]) {
-            const formatted_address =
-              "<span><strong>Stop Point: </strong></span>" +
-              results[0].formatted_address;
+            const formatted_address = `<span><strong>Stop at  ${
+              (milesToDrive * stopNumber) / 1609.34
+            } miles</strong></span><br>
+            <span> ${results[0].formatted_address}.</span>
+             `;
             infoWindow(addMarker(LatLngAtStop, "S"), formatted_address);
           } else {
             window.alert("No results found");
