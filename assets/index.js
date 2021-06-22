@@ -63,9 +63,6 @@ document.querySelector("form").addEventListener(
     origin = originField.value;
     destination = destinationField.value;
     milesToDrive = milesField.value * 1609.34; // convert miles to meters
-    (origin = "russellville, ar"),
-      (destination = "duluth, ga"),
-      (milesToDrive = 200 * 1609.34);
 
     startRoute();
     originField.value = "";
