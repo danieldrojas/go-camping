@@ -3,10 +3,14 @@
   width: 100%;
   margin: 10px;
 }
-
+body {
+  /* background-image: url("background.JPG"); */
+  margin-bottom: 60px;
+}
 h1 {
   text-align: center;
   margin: 30px;
+  font-weight: 900;
 }
 input {
   margin: 5px;
@@ -24,14 +28,21 @@ input {
 .stopCard {
   width: 800px;
   padding: 9px 20px 9px 20px;
-  margin-bottom: 0px;
+  margin-bottom: 30px;
   background: #ffffff;
   box-shadow: 2px 2px 2px 2px #dfdfdf;
   box-sizing: border-box;
   height: 200px !important;
   overflow: hidden;
 }
+.container {
+  margin-bottom: 50px;
+}
 
+#mainCard {
+  /* background-image: url("open.jpg"); */
+  /* border-radius: 50px; */
+}
 .stopInfo {
   border-radius: 10px;
   float: left;

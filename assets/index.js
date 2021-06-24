@@ -230,8 +230,65 @@ function drawCircle(LatLngAtStop) {
   });
 }
 
+//geocoding
+function reverseGeocoder() {
+  let delay; //set delay based on time of geocoding response ok;
+  let timeBefore;
+  let timeAfter;
+
+  const geocoder = new google.maps.Geocoder();
+
+  const stopsCoorsList = [];
+  trip.myStops.forEach((stop) => {
+    const { stop_point_coors } = stop;
+    stopsCoorsList.push(stop_point_coors);
+  });
+
+  // for (let i = 0; i < stopsCoorsList.length; i++) {
+  //   (i);
+  // }
+
+  getStopInfo(0);
+
+  function getStopInfo(n) {
+    if (n >= stopsCoorsList.length) return;
+
+    timeBefore = performance.now();
+    geocoder.geocode({ location: stopsCoorsList[n] }, (results, status) => {
+      if (status === "OK") {
+        timeAfter = performance.now();
+
+        if (results[0]) {
+          const formatted_address = `<span><strong>Stop at  ${
+            (milesToDrive * n) / 1609.34
+          } miles</strong></span><br>
+        <span> ${results[0].formatted_address}.</span>
+         `;
+          infoWindow(addMarker(stopsCoorsList[n], "S"), formatted_address);
+          drawCircle(stopsCoorsList[n]);
+          delay = timeAfter - timeBefore;
+
+          setTimeout(() => {
+            getStopInfo(n + 1);
+          }, 800);
+          return;
+        } else {
+          alert("Stop at ", (milesToDrive * n) / 1609.34 + " no found");
+        }
+      } else {
+        console.log("Somthing went wrong: ", status);
+        setTimeout(() => {
+          getStopInfo(n);
+        }, 1000);
+      }
+    });
+  }
+  return;
+}
+
 function setStopToTrip() {
   let n = 1;
+
   //n: stop number
 
   stopIteration(n);
@@ -241,7 +298,10 @@ function stopIteration(stopNumber) {
   const numberOfStops = Math.floor(trip.distance.value / milesToDrive);
   let stop;
   //n: stop number
-  if (stopNumber > numberOfStops) return;
+  if (stopNumber > numberOfStops) {
+    reverseGeocoder();
+    return;
+  }
 
   let total = 0;
   for (let i = 0; i < trip.steps.length; i++) {
@@ -262,28 +322,6 @@ function stopIteration(stopNumber) {
       stop.stop_point_coors = LatLngAtStop;
       myStops.push(stop);
       trip.myStops = myStops;
-
-      //reversed geocoding
-
-      const geocoder = new google.maps.Geocoder();
-
-      geocoder.geocode({ location: LatLngAtStop }, (results, status) => {
-        if (status === "OK") {
-          if (results[0]) {
-            const formatted_address = `<span><strong>Stop at  ${
-              (milesToDrive * stopNumber) / 1609.34
-            } miles</strong></span><br>
-            <span> ${results[0].formatted_address}.</span>
-             `;
-            infoWindow(addMarker(LatLngAtStop, "S"), formatted_address);
-          } else {
-            window.alert("No results found");
-          }
-        } else {
-          window.alert("Geocoder failed due to: " + status);
-        }
-      });
-      drawCircle(LatLngAtStop);
 
       return stopIteration(stopNumber + 1);
     }

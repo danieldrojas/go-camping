@@ -39,7 +39,6 @@ export default function createInfoHTML(
         <span>${formatted_phone_number}</span>
         <span>${Math.round(distanceToCampground / 1609)} miles </span><br>
         <label for="addStop" name="campgroundOptions"> <input class="addStop" name="campgroundOptions" type="checkbox" value=${place_id}>Add to route</label>
-        <a target="_blank" href="${url}"><button>More</button></a>
       </div>
         `;
 }
