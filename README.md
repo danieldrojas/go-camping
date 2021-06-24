@@ -2,7 +2,7 @@
 
 ## Description
 
-This web application provides the user with a user friendly interface to plan road trips with an recreational vehicle in the US.
+This web application provides the user with a friendly interface to plan road trips with an recreational vehicle in the US.
 
 ## Table of Contents
 
