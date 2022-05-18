@@ -1,3 +1,3 @@
-const API_KEY_MAPS_GOOGLE = "AIzaSyCYLmLpMM-c6FgdRHCBFFYjnx1FIdwSsMw";
+const API_KEY_MAPS_GOOGLE = "AIzaSyBaD0DTKTtWOf5ZK3xfAwzrU6TJntDFcUc";
 
 export default API_KEY_MAPS_GOOGLE;
